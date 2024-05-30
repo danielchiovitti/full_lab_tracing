@@ -1,8 +1,8 @@
 package http
 
 import (
-	"full_lab_tracing/pkg/presentation/http/cep"
-	"full_lab_tracing/pkg/shared/log"
+	"full_cycle_cep/pkg/presentation/http/cep"
+	"full_cycle_cep/pkg/shared/log"
 	"github.com/go-chi/chi/v5"
 )
 

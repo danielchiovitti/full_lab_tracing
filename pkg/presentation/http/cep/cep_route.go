@@ -2,9 +2,12 @@ package cep
 
 import (
 	"encoding/json"
-	"full_lab_tracing/pkg/shared/log"
+	"full_cycle_cep/pkg/core/middleware"
+	"full_cycle_cep/pkg/domain/use_cases/viacep/get_viacep"
+	"full_cycle_cep/pkg/shared/business_error"
+	"full_cycle_cep/pkg/shared/constants"
+	"full_cycle_cep/pkg/shared/log"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
 	"sync"
 )

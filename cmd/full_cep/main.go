@@ -1,7 +1,8 @@
-package full_tracing
+package main
 
 import (
 	"fmt"
+	full_lab_cep "full_cycle_cep"
 	"net/http"
 )
 
