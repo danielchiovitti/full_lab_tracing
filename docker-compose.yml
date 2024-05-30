@@ -1,11 +1,26 @@
 version: '3.8'
 
 services:
-  cep_weather:
-    build:
-      context: .
-      dockerfile: Dockerfile
+#  cep_weather:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "3500:3500"
+#    environment:
+#      - PORT=3500
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel/config.yaml
     ports:
-      - "3500:3500"
-    environment:
-      - PORT=3500
+      - "4317:4317" # OTLP gRPC receiver
+      - "4318:4318" # OTLP HTTP receiver
+      - "55680:55680" # OpenTelemetry receiver
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    ports:
+      - "9411:9411"

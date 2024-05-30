@@ -10,6 +10,7 @@ import (
 	"full_cycle_cep/pkg/domain/use_cases/viacep/get_viacep"
 	"full_cycle_cep/pkg/presentation/http"
 	"full_cycle_cep/pkg/presentation/http/cep"
+	"full_cycle_cep/pkg/presentation/http/orchestrator"
 	"full_cycle_cep/pkg/shared/log"
 	"github.com/google/wire"
 )
@@ -25,6 +26,8 @@ var superset = wire.NewSet(
 	get_viacep.NewGetViaCepUseCase,
 	cep.NewCreateCepRoute,
 	middleware.NewCepValidationMiddleware,
+
+	orchestrator.NewOrchestratorRoute,
 
 	http.ProvideHandlers,
 )
