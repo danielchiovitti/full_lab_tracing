@@ -5,6 +5,7 @@ package full_lab_cep
 
 import (
 	"full_cycle_cep/pkg/core/middleware"
+	"full_cycle_cep/pkg/domain/contracts/init_provider"
 	"full_cycle_cep/pkg/domain/contracts/viacep"
 	"full_cycle_cep/pkg/domain/contracts/weatherapi"
 	"full_cycle_cep/pkg/domain/use_cases/viacep/get_viacep"
@@ -28,6 +29,7 @@ var superset = wire.NewSet(
 	middleware.NewCepValidationMiddleware,
 
 	orchestrator.NewOrchestratorRoute,
+	init_provider.NewInitProvider,
 
 	http.ProvideHandlers,
 )
@@ -37,4 +39,11 @@ func InitializeHandlers() *http.Handlers {
 		superset,
 	)
 	return &http.Handlers{}
+}
+
+func InitializeProvider() *init_provider.InitProvider {
+	wire.Build(
+		superset,
+	)
+	return &init_provider.InitProvider{}
 }

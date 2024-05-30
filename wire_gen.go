@@ -8,6 +8,7 @@ package full_lab_cep
 
 import (
 	"full_cycle_cep/pkg/core/middleware"
+	"full_cycle_cep/pkg/domain/contracts/init_provider"
 	"full_cycle_cep/pkg/domain/contracts/viacep"
 	"full_cycle_cep/pkg/domain/contracts/weatherapi"
 	"full_cycle_cep/pkg/domain/use_cases/viacep/get_viacep"
@@ -31,6 +32,12 @@ func InitializeHandlers() *http.Handlers {
 	return handlers
 }
 
+func InitializeProvider() *init_provider.InitProvider {
+	loggerManager := log.NewLoggerManager()
+	initProvider := init_provider.NewInitProvider(loggerManager)
+	return initProvider
+}
+
 // wire.go:
 
-var superset = wire.NewSet(wire.Bind(new(log.LoggerManagerInterface), new(*log.LoggerManager)), log.NewLoggerManager, wire.Bind(new(viacep.ViaCepContractInterface), new(*viacep.ViaCepContract)), viacep.NewViaCepContract, wire.Bind(new(weatherapi.WeatherApiContractInterface), new(*weatherapi.WeatherApiContract)), weatherapi.NewWeatherApiContract, wire.Bind(new(get_viacep.GetViaCepUseCaseInterface), new(*get_viacep.GetViaCepUseCase)), get_viacep.NewGetViaCepUseCase, cep.NewCreateCepRoute, middleware.NewCepValidationMiddleware, orchestrator.NewOrchestratorRoute, http.ProvideHandlers)
+var superset = wire.NewSet(wire.Bind(new(log.LoggerManagerInterface), new(*log.LoggerManager)), log.NewLoggerManager, wire.Bind(new(viacep.ViaCepContractInterface), new(*viacep.ViaCepContract)), viacep.NewViaCepContract, wire.Bind(new(weatherapi.WeatherApiContractInterface), new(*weatherapi.WeatherApiContract)), weatherapi.NewWeatherApiContract, wire.Bind(new(get_viacep.GetViaCepUseCaseInterface), new(*get_viacep.GetViaCepUseCase)), get_viacep.NewGetViaCepUseCase, cep.NewCreateCepRoute, middleware.NewCepValidationMiddleware, orchestrator.NewOrchestratorRoute, init_provider.NewInitProvider, http.ProvideHandlers)
