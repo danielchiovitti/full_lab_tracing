@@ -26,8 +26,9 @@ func InitializeHandlers() *http.Handlers {
 	viaCepContract := viacep.NewViaCepContract(loggerManager)
 	weatherApiContract := weatherapi.NewWeatherApiContract()
 	getViaCepUseCase := get_viacep.NewGetViaCepUseCase(loggerManager, viaCepContract, weatherApiContract)
-	createCepRoute := cep.NewCreateCepRoute(loggerManager, getViaCepUseCase)
-	createOrchestratorRoute := orchestrator.NewOrchestratorRoute(loggerManager)
+	initProvider := init_provider.NewInitProvider(loggerManager)
+	createCepRoute := cep.NewCreateCepRoute(loggerManager, getViaCepUseCase, initProvider)
+	createOrchestratorRoute := orchestrator.NewOrchestratorRoute(loggerManager, initProvider)
 	handlers := http.ProvideHandlers(loggerManager, createCepRoute, createOrchestratorRoute)
 	return handlers
 }

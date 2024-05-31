@@ -10,10 +10,10 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"sync"
-	"time"
 )
 
 var lock sync.Mutex
@@ -36,8 +36,7 @@ func NewInitProvider(logger log2.LoggerManagerInterface) *InitProvider {
 	return initProviderInstance
 }
 
-func (I *InitProvider) GetProvider(serviceName, collectorURL string) (func(ctx context.Context) error, error) {
-	ctx := context.Background()
+func (I *InitProvider) GetProvider(ctx context.Context, serviceName, collectorURL, libraryName string) (trace.Tracer, error) {
 
 	res, err := resource.New(ctx,
 		resource.WithAttributes(
@@ -48,8 +47,8 @@ func (I *InitProvider) GetProvider(serviceName, collectorURL string) (func(ctx c
 		return nil, fmt.Errorf("failed to create resource: %w", err)
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, time.Second)
-	defer cancel()
+	//ctx, cancel := context.WithTimeout(ctx, time.Second)
+	//defer cancel()
 
 	conn, err := grpc.DialContext(ctx, collectorURL,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -73,5 +72,7 @@ func (I *InitProvider) GetProvider(serviceName, collectorURL string) (func(ctx c
 	otel.SetTracerProvider(tracerProvider)
 	otel.SetTextMapPropagator(propagation.TraceContext{})
 
-	return tracerProvider.Shutdown, nil
+	tracer := otel.Tracer(libraryName)
+
+	return tracer, nil
 }

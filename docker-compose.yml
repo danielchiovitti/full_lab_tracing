@@ -1,16 +1,16 @@
 version: '3.8'
 
 services:
-#  cep_weather:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - "3500:3500"
-#    environment:
-#      - PORT=3500
+  cep_weather:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3500:3500"
+    environment:
+      - PORT=3500
 
-  otel-collector:
+  otel_collector:
     image: otel/opentelemetry-collector:latest
     command: ["--config=/etc/otel/config.yaml"]
     volumes:
